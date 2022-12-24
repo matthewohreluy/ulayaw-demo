@@ -30,5 +30,5 @@ export class RegisterEffect{
 
 
 
-  constructor(private actions$: Actions, private authService: AuthService, private localStorageService: LocalStorageService){}
+  constructor(private actions$: Actions, private authService: AuthService){}
 }

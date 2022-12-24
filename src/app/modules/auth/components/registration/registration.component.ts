@@ -20,7 +20,6 @@ import { AppStateInterface } from 'src/app/shared/store/app-state.interface';
 })
 export class RegistrationComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
-  hasError: boolean;
 
   isSubmitting$: Observable<boolean>;
   backendErrors$: Observable<BackendErrorInterface | null>;
@@ -42,11 +41,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     private router: Router,
     private store: Store<AppStateInterface>
   ) {
-
-    // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
   }
 
   async openModal() {
@@ -81,6 +75,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     .subscribe((value)=>{
       if(value){
         this.openModal();
+        this.router.navigate(['/auth/login'])
       }
     })
     this.unsubscribe.push(isCreatedSub);
@@ -153,7 +148,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.hasError = false;
     const result: {
       [key: string]: string;
     } = {

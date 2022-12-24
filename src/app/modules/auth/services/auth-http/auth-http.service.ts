@@ -1,3 +1,4 @@
+import { IloginResponse } from './../../components/login/login.model';
 import { IRegisterRequest, User } from './../../components/registration/register.model';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
@@ -14,12 +15,12 @@ export class AuthHTTPService {
   constructor(private http: HttpClient) {}
 
   // public methods
-  // login(email: string, password: string): Observable<any> {
-  //   return this.http.post<AuthModel>(`${API_USERS_URL}/login`, {
-  //     email,
-  //     password,
-  //   });
-  // }
+  login({email, password}: {email: string, password: string}): Observable<any> {
+    return this.http.post<IloginResponse>(`${API_USERS_URL}/login`, {
+      email,
+      password,
+    });
+  }
 
   // CREATE =>  POST: add a new user to the server
   createUser(user: IRegisterRequest): Observable<User> {

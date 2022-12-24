@@ -9,7 +9,7 @@ const initialState: LoginStateInterface = {
   validationErrors: null,
 }
 
-export const authReducer = createReducer(
+export const loginReducer = createReducer(
   initialState,
   on(loginAction, (state): LoginStateInterface => ({
     ...state,

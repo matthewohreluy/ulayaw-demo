@@ -7,7 +7,7 @@ const initialState: RegisterStateInterface = {
   isCreatedSuccessfully: null
 }
 
-export const authReducer = createReducer(
+export const registerReducer = createReducer(
   initialState,
   on(registerAction, (state): RegisterStateInterface => ({
     ...state,

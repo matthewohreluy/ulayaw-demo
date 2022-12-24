@@ -19,75 +19,24 @@ export class AuthService implements OnDestroy {
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
 
-  // public fields
-  currentUser$: Observable<UserType>;
-  isLoading$: Observable<boolean>;
-  currentUserSubject: BehaviorSubject<UserType>;
-  isLoadingSubject: BehaviorSubject<boolean>;
 
-  get currentUserValue(): UserType {
-    return this.currentUserSubject.value;
-  }
-
-  set currentUserValue(user: UserType) {
-    this.currentUserSubject.next(user);
-  }
 
   constructor(
-    private router: Router,
     private authHttpService: AuthHTTPService
   ) {
-    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
-    this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
-    this.currentUser$ = this.currentUserSubject.asObservable();
-    this.isLoading$ = this.isLoadingSubject.asObservable();
-    // const subscr = this.getUserByToken().subscribe();
-    // this.unsubscribe.push(subscr);
+
   }
 
   // public methods
-  login(email: string, password: string)
+  login(credentials: {email: string, password: string})
    {
-    // this.isLoadingSubject.next(true);
-    // return this.authHttpService.login(email, password).pipe(
-    //   map((auth: AuthModel) => {
-    //     const result = this.setAuthFromLocalStorage(auth);
-    //     return result;
-    //   }),
-    //   switchMap(() => this.getUserByToken()),
-    //   catchError((err) => {
-    //     console.error('err', err);
-    //     return of(undefined);
-    //   }),
-    //   finalize(() => this.isLoadingSubject.next(false))
-    // );
+    return this.authHttpService.login(credentials)
   }
 
-  logout() {
 
-    this.router.navigate(['/auth/login'], {
-      queryParams: {},
-    });
-  }
 
   getUserByToken() {
-    // const auth = this.getAuthFromLocalStorage();
-    // if (!auth || !auth.authToken) {
-    //   return of(undefined);
-    // }
 
-    // this.isLoadingSubject.next(true);
-    // return this.authHttpService.getUserByToken(auth.authToken).pipe(
-    //   map((user: UserType) => {
-    //     if (user) {
-    //       this.currentUserSubject.next(user);
-    //     } else {
-    //       this.logout();
-    //     }
-    //     return user;
-    //   }),
-    //   finalize(() => this.isLoadingSubject.next(false))
-    // );
   }
 
   // need create new user then login
@@ -96,15 +45,12 @@ export class AuthService implements OnDestroy {
   }
 
   forgotPassword(email: string) {
-    // this.isLoadingSubject.next(true);
-    // return this.authHttpService
-    //   .forgotPassword(email)
-    //   .pipe(finalize(() => this.isLoadingSubject.next(false)));
+
   }
 
   // private methods
   // private setAuthFromLocalStorage(auth: AuthModel): boolean {
-  //   // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
+  // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
   //   if (auth && auth.authToken) {
   //     localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
   //     return true;
