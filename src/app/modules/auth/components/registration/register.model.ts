@@ -13,7 +13,7 @@ export interface User{
   firstName: string;
   lastName: string;
   email: string;
-  status: string;
+  status: 'New' | 'Verified';
   contact: string;
   feedback:{
     rating: number;

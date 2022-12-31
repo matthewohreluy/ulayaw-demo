@@ -1,6 +1,6 @@
-import { loginFailAction, loginSuccessAction, loginReset, loginAction } from './login.action';
+import { LoginStateInterface } from './../../../interfaces/auth.interface';
+import { loginFailAction, loginSuccessAction, loginReset, loginAction, loginByTokenAction, loginByTokenSuccessAction, loginByTokenFailAction } from './login.action';
 import { createReducer, on } from '@ngrx/store';
-import { LoginStateInterface } from '../../../interfaces/auth.interface';
 
 const initialState: LoginStateInterface = {
   isSubmitting: false,
@@ -30,6 +30,23 @@ export const loginReducer = createReducer(
     validationErrors: action.payload,
     user: null,
     isLoggedIn: false,
+  })),
+  on(loginByTokenAction, (state, action): LoginStateInterface =>({
+    ...state,
+    validationErrors: null,
+    isLoggedIn: false
+  })),
+  on(loginByTokenSuccessAction, (state, action): LoginStateInterface =>({
+    ...state,
+    validationErrors: null,
+    user: action.user,
+    isLoggedIn: true
+  })),
+  on(loginByTokenFailAction, (state, action): LoginStateInterface =>({
+    ...state,
+    validationErrors: action.payload,
+    user: null,
+    isLoggedIn: false
   })),
   on(loginReset, (): LoginStateInterface =>({
     ...initialState

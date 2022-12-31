@@ -1,5 +1,7 @@
+import { User } from './../../registration/register.model';
+import { Router } from '@angular/router';
 import { IloginRequest, IloginResponse } from './../login.model';
-import { loginAction, loginSuccessAction, loginFailAction } from './login.action';
+import { loginAction, loginSuccessAction, loginFailAction, loginByTokenAction, loginByTokenSuccessAction, loginByTokenFailAction } from './login.action';
 import { LocalStorageService } from './../../../../../shared/services/local-storage.service';
 import { AuthService } from './../../../services/auth.service';
 import { Injectable } from '@angular/core';
@@ -33,12 +35,37 @@ export class LoginEffect{
       ofType(loginSuccessAction),
       tap((data)=>{
         this.localStorageService.set('accessToken',data.token);
-        console.log('test');
         // check if validated, if validated => dashboard, if not => 6 digit verification
+        const url = data.user.status === 'New' ? '/auth/verification' : '/dashboard'
+        this.router.navigateByUrl(url);
       })
     ),
     {dispatch: false}
   );
 
-  constructor(private actions$: Actions, private authService: AuthService, private localStorageService: LocalStorageService){}
+  loginByToken$ = createEffect(()=>
+  this.actions$.pipe(
+    ofType(loginByTokenAction),
+    switchMap(({token}: {token: string})=>{
+      return this.authService.loginByToken(token).pipe(
+        map((data: {user: User})=>{
+          const response: {user: User} = {user: data.user};
+          // store data to token;
+          console.log(response);
+          return loginByTokenSuccessAction(response)
+        }),
+        catchError((errorResponse: HttpErrorResponse)=>{
+          return of(loginByTokenFailAction({payload: errorResponse.error.payload}))
+          })
+        )
+      })
+    )
+  );
+
+
+  constructor(
+    private router: Router,
+    private actions$: Actions,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService){}
 }

@@ -14,7 +14,6 @@ const API_USERS_URL = `${environment.apiUrl}/auth`;
 export class AuthHTTPService {
   constructor(private http: HttpClient) {}
 
-  // public methods
   login({email, password}: {email: string, password: string}): Observable<any> {
     return this.http.post<IloginResponse>(`${API_USERS_URL}/login`, {
       email,
@@ -22,7 +21,6 @@ export class AuthHTTPService {
     });
   }
 
-  // CREATE =>  POST: add a new user to the server
   createUser(user: IRegisterRequest): Observable<User> {
     return this.http.put<User>(`${API_USERS_URL}/signup`, user).pipe(
       map((response: any)=>response.user)
@@ -36,11 +34,11 @@ export class AuthHTTPService {
     });
   }
 
-  getUserByToken(token: string): Observable<UserModel> {
+  loginByToken(token: string): Observable<{user: User}> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_URL}/me`, {
+    return this.http.get<{user: User}>(`${API_USERS_URL}/loginUsingToken`, {
       headers: httpHeaders,
     });
   }

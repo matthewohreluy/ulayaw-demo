@@ -1,3 +1,4 @@
+import { LoginEffect } from './modules/auth/components/login/store/login.effects';
 import { EffectsModule } from '@ngrx/effects';
 
 import { StoreModule } from '@ngrx/store';
@@ -15,7 +16,7 @@ import { InlineSVGModule } from 'ng-inline-svg-2';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
-
+import * as login from './modules/auth/components/login/store/login.reducer';
 
 
 
@@ -30,8 +31,8 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({login: login.loginReducer}),
+    EffectsModule.forRoot([LoginEffect]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production})
   ],
   providers: [

@@ -6,9 +6,6 @@ import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { UserModel } from '../../../shared/models/user.model';
 
 
-import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
-
 export type UserType = UserModel | undefined;
 
 @Injectable({
@@ -28,15 +25,14 @@ export class AuthService implements OnDestroy {
   }
 
   // public methods
-  login(credentials: {email: string, password: string})
-   {
+  login(credentials: {email: string, password: string}){
     return this.authHttpService.login(credentials)
   }
 
 
 
-  getUserByToken() {
-
+  loginByToken(token: string) {
+    return this.authHttpService.loginByToken(token)
   }
 
   // need create new user then login

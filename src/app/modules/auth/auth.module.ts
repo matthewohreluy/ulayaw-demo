@@ -1,3 +1,4 @@
+import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
 import { LoginEffect } from './components/login/store/login.effects';
 import { ModalsModule } from './../../_metronic/partials/layout/modals/modals.module';
 import { RegisterEffect } from './components/registration/store/register.effect';
@@ -15,13 +16,14 @@ import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
 import { EffectsModule } from '@ngrx/effects';
 import * as register from './components/registration/store/register.reducer';
-import * as login from './components/login/store/login.reducer';
+
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistrationComponent,
     ForgotPasswordComponent,
+    EmailVerificationComponent,
     LogoutComponent,
     AuthComponent,
   ],
@@ -33,9 +35,8 @@ import * as login from './components/login/store/login.reducer';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    EffectsModule.forFeature([RegisterEffect, LoginEffect]),
+    EffectsModule.forFeature([RegisterEffect]),
     StoreModule.forFeature('register',register.registerReducer),
-    StoreModule.forFeature('login',login.loginReducer),
   ],
 })
 export class AuthModule {}
