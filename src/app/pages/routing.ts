@@ -6,11 +6,26 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+
   {
-    path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full',
+    path: 'admin',
+    loadChildren: () =>
+      import('./admin/admin.module').then((m) => m.AdminModule),
   },
+
+  {
+    path: 'guest',
+    loadChildren: () =>
+      import('./guest/guest.module').then((m) => m.GuestModule),
+  },
+
+  {
+    path: 'staff',
+    loadChildren: () =>
+      import('./staff/staff.module').then((m) => m.StaffModule),
+  },
+
+
   {
     path: '**',
     redirectTo: 'error/404',

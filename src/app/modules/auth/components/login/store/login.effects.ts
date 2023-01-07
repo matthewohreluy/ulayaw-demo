@@ -1,7 +1,7 @@
 import { User } from './../../registration/register.model';
 import { Router } from '@angular/router';
 import { IloginRequest, IloginResponse } from './../login.model';
-import { loginAction, loginSuccessAction, loginFailAction, loginByTokenAction, loginByTokenSuccessAction, loginByTokenFailAction } from './login.action';
+import { loginAction, loginSuccessAction, loginFailAction, loginByTokenAction, loginByTokenSuccessAction, loginByTokenFailAction, loginSuccessLoadedAction } from './login.action';
 import { LocalStorageService } from './../../../../../shared/services/local-storage.service';
 import { AuthService } from './../../../services/auth.service';
 import { Injectable } from '@angular/core';
@@ -29,19 +29,34 @@ export class LoginEffect{
     )
   );
 
-  redirectAfterLoginSuccess$ = createEffect(
+  loginSuccess$ = createEffect(
     ()=>
     this.actions$.pipe(
       ofType(loginSuccessAction),
-      tap((data)=>{
+      map((data)=>{
         this.localStorageService.set('accessToken',data.token);
         // check if validated, if validated => dashboard, if not => 6 digit verification
-        const url = data.user.status === 'New' ? '/auth/verification' : '/dashboard'
-        this.router.navigateByUrl(url);
+        // navigate Url
+        this.authService.navigateUserUrl();
+        // const url = data.user.status === 'New' ? '/auth/verification' : '/dashboard'
+        // this.router.navigateByUrl(url);
+        return loginSuccessLoadedAction();
       })
-    ),
-    {dispatch: false}
+    )
   );
+
+  loginFail$ = createEffect(
+    ()=>
+    this.actions$.pipe(
+      ofType(loginFailAction),
+      map((data)=>{
+        return loginSuccessLoadedAction();
+      })
+    )
+  );
+
+
+
 
   loginByToken$ = createEffect(()=>
   this.actions$.pipe(
@@ -49,7 +64,7 @@ export class LoginEffect{
     switchMap(({token}: {token: string})=>{
       return this.authService.loginByToken(token).pipe(
         map((data: {user: User})=>{
-          const response: {user: User} = {user: data.user};
+          const response: {user: User, token: string} = {user: data.user , token: this.localStorageService.get('accessToken')};
           // store data to token;
           console.log(response);
           return loginByTokenSuccessAction(response)
@@ -61,6 +76,23 @@ export class LoginEffect{
       })
     )
   );
+
+  loginByTokenSuccess$ = createEffect(()=>
+      this.actions$.pipe(
+        ofType(loginByTokenSuccessAction),
+        map(()=> loginSuccessLoadedAction())
+      )
+  )
+
+  loginByTokenFail$ = createEffect(()=>
+  this.actions$.pipe(
+    ofType(loginByTokenFailAction),
+    map(()=> loginSuccessLoadedAction())
+  )
+  )
+
+
+
 
 
   constructor(

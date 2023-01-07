@@ -1,3 +1,4 @@
+import { BackendErrorInterface } from './../../../../shared/interface/backend-errors.interface';
 import { IloginRequest } from './login.model';
 import { loginAction } from './store/login.action';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -7,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppStateInterface } from 'src/app/shared/store/app-state.interface';
 import { select, Store } from '@ngrx/store';
-import { isSubmittingSelector } from './store/login.selector';
+import { isSubmittingSelector, validationErrorsSelector } from './store/login.selector';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +22,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: 'demo',
   };
   loginForm: FormGroup;
-  hasError: boolean;
   returnUrl: string;
   isSubmitting$: Observable<boolean>;
+  validationErrors$: Observable<string | null | BackendErrorInterface>;
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
@@ -44,7 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   initValues(){
-    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector))
+    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector));
+    this.validationErrors$ = this.store.pipe(select(validationErrorsSelector));
   }
 
   // convenience getter for easy access to form fields

@@ -1,17 +1,20 @@
+import { IemailVerificationRequest, IemailVerificationResponse } from './../../components/email-verification/email-verification.model';
 import { IloginResponse } from './../../components/login/login.model';
 import { IRegisterRequest, User } from './../../components/registration/register.model';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { UserModel } from '../../../../shared/models/user.model';
 import { environment } from '../../../../../environments/environment';
 
-const API_USERS_URL = `${environment.apiUrl}/auth`;
+const API_USERS_URL = `/auth`;
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthHTTPService {
+  private user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  userObs: Observable<User | null>;
+
   constructor(private http: HttpClient) {}
 
   login({email, password}: {email: string, password: string}): Observable<any> {
@@ -19,6 +22,10 @@ export class AuthHTTPService {
       email,
       password,
     });
+  }
+
+  verifyEmail(payload: IemailVerificationRequest){
+    return this.http.post<IemailVerificationResponse>(`${API_USERS_URL}/verifyEmail`,payload)
   }
 
   createUser(user: IRegisterRequest): Observable<User> {
@@ -35,11 +42,9 @@ export class AuthHTTPService {
   }
 
   loginByToken(token: string): Observable<{user: User}> {
-    const httpHeaders = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
-    return this.http.get<{user: User}>(`${API_USERS_URL}/loginUsingToken`, {
-      headers: httpHeaders,
-    });
+    // const httpHeaders = new HttpHeaders({
+    //   Authorization: `Bearer ${token}`,
+    // });
+    return this.http.get<{user: User}>(`${API_USERS_URL}/loginUsingToken`);
   }
 }

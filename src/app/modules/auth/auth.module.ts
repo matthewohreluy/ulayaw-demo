@@ -1,3 +1,4 @@
+import { EmailVerificationEffect } from './components/email-verification/store/email-verification.effect';
 import { EmailVerificationComponent } from './components/email-verification/email-verification.component';
 import { LoginEffect } from './components/login/store/login.effects';
 import { ModalsModule } from './../../_metronic/partials/layout/modals/modals.module';
@@ -16,6 +17,7 @@ import { AuthComponent } from './auth.component';
 import { TranslationModule } from '../i18n/translation.module';
 import { EffectsModule } from '@ngrx/effects';
 import * as register from './components/registration/store/register.reducer';
+import * as emailVerification from './components/email-verification/store/email-verification.reducer';
 
 
 @NgModule({
@@ -35,8 +37,9 @@ import * as register from './components/registration/store/register.reducer';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    EffectsModule.forFeature([RegisterEffect]),
+    EffectsModule.forFeature([RegisterEffect, EmailVerificationEffect]),
     StoreModule.forFeature('register',register.registerReducer),
+    StoreModule.forFeature('emailVerification',emailVerification.emailVerificationReducer),
   ],
 })
 export class AuthModule {}

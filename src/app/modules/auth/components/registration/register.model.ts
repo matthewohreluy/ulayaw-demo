@@ -20,7 +20,7 @@ export interface User{
     description: string;
     isAnonymous: boolean;
   };
-  role: string;
+  role: 'Admin' | 'Staff' | 'Guest';
   code: string;
   dateCreated: Date;
   dateUpdated: Date;

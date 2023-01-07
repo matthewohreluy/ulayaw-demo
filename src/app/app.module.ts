@@ -6,7 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import * as login from './modules/auth/components/login/store/login.reducer';
+import { AuthInterceptorService } from './interceptors/auth.interceptor.service';
 
 
 
@@ -36,7 +37,11 @@ import * as login from './modules/auth/components/login/store/login.reducer';
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production})
   ],
   providers: [
-
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass:AuthInterceptorService,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

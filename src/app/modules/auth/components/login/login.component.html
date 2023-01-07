@@ -26,10 +26,10 @@
 
 
   <!-- begin::Alert error-->
-  <ng-container *ngIf="hasError">
+  <ng-container *ngIf="(validationErrors$ | async) as validationError">
     <div class="mb-lg-15 alert alert-danger">
       <div class="alert-text font-weight-bold">
-        The login details are incorrect
+        {{validationError}}
       </div>
     </div>
   </ng-container>
@@ -117,7 +117,7 @@
         </span>
       </ng-container>
       <ng-container *ngIf="(isSubmitting$ | async) === false">
-        <span class="indicator-label">Continue</span>
+        <span class="indicator-label">Login</span>
       </ng-container>
     </button>
   </div>

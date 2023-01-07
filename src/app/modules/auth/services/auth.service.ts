@@ -1,9 +1,14 @@
+import { Router } from '@angular/router';
+import { userSelector } from './../components/login/store/login.selector';
+import { select, Store } from '@ngrx/store';
+import { IemailVerificationRequest } from './../components/email-verification/email-verification.model';
 import { AuthHTTPService } from './auth-http/auth-http.service';
 import { User, IRegisterRequest } from './../components/registration/register.model';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, of, Subscription, take, lastValueFrom  } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { UserModel } from '../../../shared/models/user.model';
+import { AppStateInterface } from 'src/app/shared/store/app-state.interface';
 
 
 export type UserType = UserModel | undefined;
@@ -19,7 +24,9 @@ export class AuthService implements OnDestroy {
 
 
   constructor(
-    private authHttpService: AuthHTTPService
+    private authHttpService: AuthHTTPService,
+    private store: Store<AppStateInterface>,
+    private router: Router
   ) {
 
   }
@@ -44,32 +51,35 @@ export class AuthService implements OnDestroy {
 
   }
 
-  // private methods
-  // private setAuthFromLocalStorage(auth: AuthModel): boolean {
-  // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
-  //   if (auth && auth.authToken) {
-  //     localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
-  //     return true;
-  //   }
-  //   return false;
-  // }
+  verifyEmail(payload: IemailVerificationRequest){
+    return this.authHttpService.verifyEmail(payload)
+  }
 
-  // private getAuthFromLocalStorage(): AuthModel | undefined {
-  //   try {
-  //     const lsValue = localStorage.getItem(this.authLocalStorageToken);
-  //     if (!lsValue) {
-  //       return undefined;
-  //     }
 
-  //     const authData = JSON.parse(lsValue);
-  //     return authData;
-  //   } catch (error) {
-  //     console.error(error);
-  //     return undefined;
-  //   }
-  // }
 
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
+  }
+
+  async navigateUserUrl(){
+    let user: User | null = await lastValueFrom(this.store.pipe(select(userSelector),take(1)));
+    let url: string = '';
+    if(user){
+      if(user.status === 'New'){
+        url = '/auth/verification';
+      }else{
+        if(user.role === 'Admin'){
+          url = 'admin'
+        }else
+        if(user.role === 'Staff'){
+          url = 'staff'
+        }else
+        if(user.role === 'Guest'){
+          url = 'guest'
+        }
+      }
+      this.router.navigateByUrl(url);
+    }
+
   }
 }

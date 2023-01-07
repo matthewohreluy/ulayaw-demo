@@ -21,3 +21,12 @@ export const isLoggedInSelector = createSelector(
 export const userSelector = createSelector(
   authFeatureSelector,
   (authState: LoginStateInterface)=>authState.user)
+
+export const authTokenSelector = createSelector(
+  authFeatureSelector,
+  (authState: LoginStateInterface)=>authState.authToken)
+
+
+export const hasLoadedSelector = createSelector(
+  authFeatureSelector,
+  (authState: LoginStateInterface)=>authState.hasLoaded)

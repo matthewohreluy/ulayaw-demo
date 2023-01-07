@@ -1,5 +1,5 @@
 import { LocalStorageService } from './shared/services/local-storage.service';
-import { loginByTokenAction } from './modules/auth/components/login/store/login.action';
+import { loginByTokenAction, loginSuccessLoadedAction } from './modules/auth/components/login/store/login.action';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TranslationService } from './modules/i18n';
 // language list
@@ -44,9 +44,11 @@ export class AppComponent implements OnInit {
     if(token){
       this.store.dispatch(loginByTokenAction({token: token}))
     }else{
-
+      this.store.dispatch(loginSuccessLoadedAction())
     }
 
     this.modeService.init();
   }
+
+
 }
