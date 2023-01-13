@@ -1,3 +1,4 @@
+import { UserRoles } from './../../../../shared/constants/user/user-roles';
 export interface IRegisterRequest{
   email: string;
   firstName: string;
@@ -20,7 +21,7 @@ export interface User{
     description: string;
     isAnonymous: boolean;
   };
-  role: 'Admin' | 'Staff' | 'Guest';
+  role: UserRoles;
   code: string;
   dateCreated: Date;
   dateUpdated: Date;

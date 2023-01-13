@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { IemailVerificationRequest, IemailVerificationResponse } from './../email-verification.model';
 import { switchMap, map, catchError, of,tap } from 'rxjs';
 import { verifyEmailAction, verifyEmailSuccessAction, verifyEmailFailAction } from './email-verification.action';
-import { AuthService } from './../../../services/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
@@ -40,8 +40,6 @@ export class EmailVerificationEffect{
     ofType(verifyEmailSuccessAction),
     map(
         (_data)=>{
-          // const url = '/dashboard';
-          // this.router.navigateByUrl(url);
           this.authService.navigateUserUrl();
         })
       ),

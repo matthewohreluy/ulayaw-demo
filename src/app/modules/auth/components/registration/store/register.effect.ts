@@ -1,6 +1,6 @@
 import { LocalStorageService } from './../../../../../shared/services/local-storage.service';
 import { User, IRegisterRequest } from './../register.model';
-import { AuthService } from './../../../services/auth.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';

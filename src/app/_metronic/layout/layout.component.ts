@@ -89,6 +89,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
           this.layout.currentLayoutTypeSubject.next(nextLayoutType);
           this.initService.reInitProps(nextLayoutType);
         }
+
+        // set sidebar menu
+        const sideBarMenu = this.activatedRoute.firstChild?.snapshot.data['sideBarMenu'] || [];
+        this.layout.updateSideMenuSubject(sideBarMenu);
       }
     });
   }

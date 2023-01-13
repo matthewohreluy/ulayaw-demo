@@ -1,13 +1,13 @@
+import { UserRoles } from '../../../../shared/constants/user/user-roles';
 import { Router } from '@angular/router';
-import { userSelector } from './../components/login/store/login.selector';
+import { userSelector } from '../../components/login/store/login.selector';
 import { select, Store } from '@ngrx/store';
-import { IemailVerificationRequest } from './../components/email-verification/email-verification.model';
-import { AuthHTTPService } from './auth-http/auth-http.service';
-import { User, IRegisterRequest } from './../components/registration/register.model';
+import { IemailVerificationRequest } from '../../components/email-verification/email-verification.model';
+import { AuthHTTPService } from './auth-http.service';
+import { User, IRegisterRequest } from '../../components/registration/register.model';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, of, Subscription, take, lastValueFrom  } from 'rxjs';
-import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { UserModel } from '../../../shared/models/user.model';
+import { Observable, Subscription, take, lastValueFrom  } from 'rxjs';
+import { UserModel } from '../../../../shared/models/user.model';
 import { AppStateInterface } from 'src/app/shared/store/app-state.interface';
 
 
@@ -68,13 +68,13 @@ export class AuthService implements OnDestroy {
       if(user.status === 'New'){
         url = '/auth/verification';
       }else{
-        if(user.role === 'Admin'){
+        if(user.role === UserRoles.Admin){
           url = 'admin'
         }else
-        if(user.role === 'Staff'){
+        if(user.role === UserRoles.Staff){
           url = 'staff'
         }else
-        if(user.role === 'Guest'){
+        if(user.role === UserRoles.Guest){
           url = 'guest'
         }
       }

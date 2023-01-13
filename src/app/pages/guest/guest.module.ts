@@ -1,3 +1,4 @@
+import { GuestRoutingModule } from './guest-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -6,7 +7,8 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule,
+    GuestRoutingModule
   ]
 })
 export class GuestModule { }

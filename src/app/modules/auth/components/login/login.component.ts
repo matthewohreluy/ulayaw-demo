@@ -4,7 +4,7 @@ import { loginAction } from './store/login.action';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppStateInterface } from 'src/app/shared/store/app-state.interface';
 import { select, Store } from '@ngrx/store';

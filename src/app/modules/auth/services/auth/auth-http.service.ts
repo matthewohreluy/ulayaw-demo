@@ -1,6 +1,6 @@
-import { IemailVerificationRequest, IemailVerificationResponse } from './../../components/email-verification/email-verification.model';
-import { IloginResponse } from './../../components/login/login.model';
-import { IRegisterRequest, User } from './../../components/registration/register.model';
+import { IemailVerificationRequest, IemailVerificationResponse } from '../../components/email-verification/email-verification.model';
+import { IloginResponse } from '../../components/login/login.model';
+import { IRegisterRequest, User } from '../../components/registration/register.model';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

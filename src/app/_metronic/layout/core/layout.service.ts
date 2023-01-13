@@ -1,6 +1,7 @@
+import { ISidebarMenu } from './../../../shared/interface/sidebar/sidebar-menu.interface';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import * as objectPath from 'object-path';
 import {
   LayoutType,
@@ -70,7 +71,13 @@ export class LayoutService {
   private attrs: BehaviorSubject<HTMLAttributesType> =
     new BehaviorSubject<HTMLAttributesType>(getEmptyHTMLAttributes());
 
+  private sideMenuSubject = new BehaviorSubject<ISidebarMenu[]>([]);
+  sideMenu$: Observable<ISidebarMenu[]> = this.sideMenuSubject.asObservable();
   constructor(private activatedRoute: ActivatedRoute) {}
+
+  updateSideMenuSubject(sidebarMenu: ISidebarMenu[]){
+    this.sideMenuSubject.next(sidebarMenu);
+  }
 
   getProp(path: string, config?: ILayout): string | boolean | undefined | Object {
     if (config) {

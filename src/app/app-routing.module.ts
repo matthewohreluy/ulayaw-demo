@@ -8,6 +8,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     canActivate: [NoAuthGuard],
+    canLoad: [NoAuthGuard],
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
@@ -15,6 +16,7 @@ export const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
+    canLoad: [AuthGuard],
     loadChildren: () =>
       import('./_metronic/layout/layout.module').then((m) => m.LayoutModule),
   },
@@ -22,7 +24,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {enableTracing: false})],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
